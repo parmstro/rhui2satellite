@@ -1,0 +1,41 @@
+---
+
+- name: "Display current facts"
+  ansible.builtin.debug:
+    var: ansible_facts
+
+- name: "Configure for Azure"
+  when: rhui2satellite_cloud == "azure"
+  block:
+    - name: "Set RHUI package for RHEL7 on Azure"
+      when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "7")
+      ansible.builtin.set_fact:
+        pkg_name: "rhui-azure-rhel7"
+
+    - name: "Set RHUI package for RHEL8 on Azure"
+      when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "8")
+      ansible.builtin.set_fact:
+        pkg_name: "rhui-azure-rhel8"
+
+    - name: "Set RHUI package for RHEL9 on Azure"
+      when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "9")
+      ansible.builtin.set_fact:
+        pkg_name: "rhui-azure-rhel9"
+
+    - name: "Display package facts"
+      ansible.builtin.debug:
+        var: pkg_name
+
+- name: "Disable the RHUI repos and remove the configuration package"
+  ansible.builtin.yum:
+    name: "{{ pkg_name }}"
+    disablerepo: "*"
+    state: removed
+
+- name: "Gather updated repo configuration" # noqa: no-changed-when
+  ansible.builtin.command: "subscription-manager repos --list-enabled"
+  register: results
+
+- name: "Display current repo configuration - should be no repos"
+  ansible.builtin.debug:
+    var: results

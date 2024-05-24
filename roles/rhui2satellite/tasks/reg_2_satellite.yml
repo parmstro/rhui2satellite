@@ -1,0 +1,14 @@
+---
+
+# use the Satellite global regististration to register the servers
+
+- name: "Run the Satellite registration command" # noqa: command-instead-of-shell no-changed-when risky-shell-pipe ignore-errors
+  ansible.builtin.shell: "{{ satellite_reg_cmd }}"
+
+- name: "Gather updated repo configuration" # noqa: no-changed-when
+  ansible.builtin.command: "subscription-manager repos --list-enabled"
+  register: results
+
+- name: "Display current repo configuration"
+  ansible.builtin.debug:
+    var: results

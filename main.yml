@@ -1,0 +1,9 @@
+---
+# Switch from RHUI to Satellite
+
+- name: "Switch from RHUI to Satellite"
+  hosts: all
+  become: true
+
+  roles:
+    - rhui2satellite

@@ -1,0 +1,27 @@
+---
+#######################################################
+#
+# NOTE: You should copy this file for individual groups
+#       Don't use this for the all file
+#######################################################
+
+# yamllint disable rule:line-length
+# rhui2satellite_cloud: "azure"  # valid values: azure
+
+# This command is currently a copy and paste operation in this playbook.
+# Eventually I will swap it out so that we make an API call to Satellite to get the command
+# based on the configuration that you request.
+# For now, in the Satellite UI Navigate to
+#   Hosts -> Register Host
+# Fill out the form:
+# Ensure that you select the proper values for:
+#   Organization
+#   Location  - this is important if you are running a capsule in the cloud. (Hint: you should!)
+#   Host Group  - this is very valuable if you are following the RH-ISAM and using Satellite to deploy your cloud instances (Hint: you should!)
+#   Capsule  - if you have multiple or a load balancer
+#   Activation Keys  - this is hugely important!! You can set this up by group in your inventory (remember this is the all.yml file)
+
+# Now click generate and copy the command into the value for satellite_reg_cmd
+# Set your inventory and run the main.yml = you should be good to go
+
+# satellite_reg_cmd: "set -o pipefail && curl -sS --insecure 'https://sat.example.com/register?activation_keys=azure8&force=true&location_id=3&organization_id=1&packages=katello-host-tools+katello-host-tools-tracer&update_packages=false' -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.this_is_a_really_long_string.HHOedB5pUNC5XUcv2ooxzHcuBfm_Crr0FZpyd_rPMWQ' | bash"

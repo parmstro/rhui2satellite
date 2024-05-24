@@ -1,0 +1,9 @@
+---
+
+# role entry point
+
+- name: "Disable and remove the RHUI repos"
+  ansible.builtin.include_tasks: remove_repos.yml
+
+- name: "Register to satellite"
+  ansible.builtin.include_tasks: reg_2_satellite.yml
